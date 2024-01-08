@@ -46,7 +46,7 @@ data "azurecaf_name" "os_disk_linux" {
   use_slug      = var.global_settings.use_slug
 }
 resource "local_sensitive_file" "custom_data" {
-  for_each = local.os_type == "linux" ? try({for k,v in var.settings.virtual_machine_settings : k => v if can(v.custom_data.templatefile)} , {}) : {}
+  for_each = local.os_type == "linux" ? try({ for k, v in var.settings.virtual_machine_settings : k => v if can(v.custom_data.templatefile) }, {}) : {}
   content  = templatefile(try(format("%s/%s", path.cwd, each.value.custom_data.templatefile), each.value.custom_data.templatefile), merge(each.value.custom_data, local.dynamic_custom_data))
   filename = try(format("%s/%s.out", path.cwd, each.value.custom_data.templatefile), each.value.custom_data.templatefile)
 }
@@ -68,22 +68,22 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                            = data.azurecaf_name.linux[each.key].result
   network_interface_ids           = local.nic_ids
   # (Optional) Specifies the mode of in-guest patching to this Linux Virtual Machine. Possible values are AutomaticByPlatform and ImageDefault. Defaults to ImageDefault. For more information on patch modes please see the product documentation.
-  patch_mode                      = try(each.value.patch_mode, "ImageDefault")
-  priority                        = try(each.value.priority, null)
-  provision_vm_agent              = try(each.value.provision_vm_agent, true)
-  proximity_placement_group_id    = can(each.value.proximity_placement_group_key) || can(each.value.proximity_placement_group.key) ? var.proximity_placement_groups[try(var.client_config.landingzone_key, var.client_config.landingzone_key)][try(each.value.proximity_placement_group_key, each.value.proximity_placement_group.key)].id : try(each.value.proximity_placement_group_id, each.value.proximity_placement_group.id, null)
-  resource_group_name             = local.resource_group_name
-  size                            = each.value.size
-  tags                            = merge(local.tags, try(each.value.tags, null))
-  zone                            = try(each.value.zone, null)
-  secure_boot_enabled             = try(each.value.secure_boot_enabled, null)
-  vtpm_enabled                    = try(each.value.vtpm_enabled, null)
+  patch_mode                   = try(each.value.patch_mode, "ImageDefault")
+  priority                     = try(each.value.priority, null)
+  provision_vm_agent           = try(each.value.provision_vm_agent, true)
+  proximity_placement_group_id = can(each.value.proximity_placement_group_key) || can(each.value.proximity_placement_group.key) ? var.proximity_placement_groups[try(var.client_config.landingzone_key, var.client_config.landingzone_key)][try(each.value.proximity_placement_group_key, each.value.proximity_placement_group.key)].id : try(each.value.proximity_placement_group_id, each.value.proximity_placement_group.id, null)
+  resource_group_name          = local.resource_group_name
+  size                         = each.value.size
+  tags                         = merge(local.tags, try(each.value.tags, null))
+  zone                         = try(each.value.zone, null)
+  secure_boot_enabled          = try(each.value.secure_boot_enabled, null)
+  vtpm_enabled                 = try(each.value.vtpm_enabled, null)
 
 
   custom_data = try(
     try(
       try(local_sensitive_file.custom_data[each.key].content_base64, local.dynamic_custom_data[each.value.custom_data][each.value.name]),
-      try(filebase64(format("%s/%s", path.cwd, each.value.custom_data)), base64encode(each.value.custom_data))),
+    try(filebase64(format("%s/%s", path.cwd, each.value.custom_data)), base64encode(each.value.custom_data))),
   null)
 
 
