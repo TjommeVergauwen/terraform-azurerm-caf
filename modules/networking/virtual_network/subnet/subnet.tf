@@ -18,6 +18,7 @@ resource "azurerm_subnet" "subnet" {
   service_endpoints                             = var.service_endpoints
   private_endpoint_network_policies_enabled     = try(var.private_endpoint_network_policies_enabled, null)
   private_link_service_network_policies_enabled = try(var.private_link_service_network_policies_enabled, null)
+  default_outbound_access_enabled               = try(var.settings.default_outbound_access_enabled, true)
 
   dynamic "delegation" {
     for_each = try(var.settings.delegation, null) == null ? [] : [1]
