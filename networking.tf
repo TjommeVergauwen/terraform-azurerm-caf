@@ -33,7 +33,7 @@ module "networking" {
 
   application_security_groups       = local.combined_objects_application_security_groups
   client_config                     = local.client_config
-  ddos_id                           = try(local.combined_objects_ddos_services[try(each.value.ddos_services_lz_key, local.client_config.landingzone_key)][try(each.value.ddos_services_key, each.value.ddos_services_key)].id, "")
+  ddos_id                           = try(local.combined_objects_ddos_services[try(each.value.ddos_services_lz_key, local.client_config.landingzone_key)][try(each.value.ddos_services_key, each.value.ddos_services_key)].id, try(each.value.ddos_protection_plan_id, ""))
   diagnostics                       = local.combined_diagnostics
   global_settings                   = local.global_settings
   network_security_groups           = module.network_security_groups
@@ -142,10 +142,12 @@ module "public_ip_addresses" {
   # Zone behavior kept to support smooth migration to azurerm 3.x
   zones = try(each.value.sku, "Basic") == "Basic" ? [] : try(each.value.zones, null) == null ? ["1", "2", "3"] : each.value.zones
 
-  base_tags           = local.global_settings.inherit_tags
-  resource_group      = local.combined_objects_resource_groups[try(each.value.resource_group.lz_key, local.client_config.landingzone_key)][try(each.value.resource_group_key, each.value.resource_group.key)]
-  resource_group_name = can(each.value.resource_group.name) || can(each.value.resource_group_name) ? try(each.value.resource_group.name, each.value.resource_group_name) : null
-  location            = try(local.global_settings.regions[each.value.region], null)
+  base_tags               = local.global_settings.inherit_tags
+  resource_group          = local.combined_objects_resource_groups[try(each.value.resource_group.lz_key, local.client_config.landingzone_key)][try(each.value.resource_group_key, each.value.resource_group.key)]
+  resource_group_name     = can(each.value.resource_group.name) || can(each.value.resource_group_name) ? try(each.value.resource_group.name, each.value.resource_group_name) : null
+  location                = try(local.global_settings.regions[each.value.region], null)
+  ddos_protection_mode    = try(each.value.ddos_protection_mode, null)
+  ddos_protection_plan_id = try(each.value.ddos_protection_plan_id, null)
 }
 
 #

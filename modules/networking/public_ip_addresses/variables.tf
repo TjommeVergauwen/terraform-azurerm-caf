@@ -128,3 +128,13 @@ variable "base_tags" {
   description = "Base tags for the resource to be inherited from the resource group."
   type        = bool
 }
+variable "ddos_protection_mode" {
+  description = "(Optional) The DDoS protection mode of the public IP. Possible values are Disabled, Enabled, and VirtualNetworkInherited. Defaults to VirtualNetworkInherited"
+  type        = string
+  default     = "VirtualNetworkInherited"
+}
+variable "ddos_protection_plan_id" {
+  description = "(Optional) The ID of DDoS protection plan associated with the public IP."
+  type        = string
+  default     = null
+}
