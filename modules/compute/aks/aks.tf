@@ -42,6 +42,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
   location                          = local.location
   resource_group_name               = local.resource_group_name
   role_based_access_control_enabled = try(var.settings.role_based_access_control_enabled, null)
+  image_cleaner_enabled             = try(var.settings.image_cleaner_enabled, false)
+  image_cleaner_interval_hours      = try(var.settings.image_cleaner_interval_hours, 0)
 
   default_node_pool {
     zones                         = try(var.settings.default_node_pool.zones, var.settings.default_node_pool.availability_zones, null)
@@ -74,6 +76,12 @@ resource "azurerm_kubernetes_cluster" "aks" {
     pod_subnet_id  = can(var.settings.default_node_pool.pod_subnet_key) == false || can(var.settings.default_node_pool.pod_subnet.key) == false || can(var.settings.default_node_pool.pod_subnet_id) || can(var.settings.default_node_pool.pod_subnet.resource_id) ? try(var.settings.default_node_pool.pod_subnet_id, var.settings.default_node_pool.pod_subnet.resource_id, null) : var.vnets[try(var.settings.lz_key, var.client_config.landingzone_key)][var.settings.vnet_key].subnets[try(var.settings.default_node_pool.pod_subnet_key, var.settings.default_node_pool.pod_subnet.key)].id
     vnet_subnet_id = can(var.settings.default_node_pool.vnet_subnet_id) || can(var.settings.default_node_pool.subnet.resource_id) ? try(var.settings.default_node_pool.vnet_subnet_id, var.settings.default_node_pool.subnet.resource_id) : var.vnets[try(var.settings.vnet.lz_key, var.settings.lz_key, var.client_config.landingzone_key)][try(var.settings.vnet.key, var.settings.vnet_key)].subnets[try(var.settings.default_node_pool.subnet_key, var.settings.default_node_pool.subnet.key)].id
 
+    # dynamic "upgrade_settings" {
+    #   for_each = try(var.settings.default_node_pool.upgrade_settings, null) == null ? [] : [var.settings.default_node_pool.upgrade_settings]
+    #   content {
+    #     max_surge = upgrade_settings.value.max_surge
+    #   }
+    # }
     dynamic "upgrade_settings" {
       for_each = try(var.settings.default_node_pool.upgrade_settings, null) == null ? [] : [1]
       content {
@@ -315,6 +323,50 @@ resource "azurerm_kubernetes_cluster" "aks" {
         content {
           end   = var.settings.maintenance_window.not_allowed.end
           start = var.settings.maintenance_window.not_allowed.start
+        }
+      }
+    }
+  }
+
+  dynamic "maintenance_window_auto_upgrade" {
+    for_each = try(var.settings.maintenance_window_auto_upgrade[*], {})
+    content {
+      day_of_month = try(maintenance_window_auto_upgrade.value.day_of_month, null)
+      day_of_week  = try(maintenance_window_auto_upgrade.value.day_of_week, null)
+      duration     = try(maintenance_window_auto_upgrade.value.duration, null)
+      frequency    = try(maintenance_window_auto_upgrade.value.frequency, null)
+      interval     = try(maintenance_window_auto_upgrade.value.interval, null)
+      week_index   = try(maintenance_window_auto_upgrade.value.week_index, null)
+      start_date   = try(maintenance_window_auto_upgrade.value.start_date, null)
+      start_time   = try(maintenance_window_auto_upgrade.value.start_time, null)
+      utc_offset   = try(maintenance_window_auto_upgrade.value.utc_offset, null)
+      dynamic "not_allowed" {
+        for_each = try(maintenance_window_auto_upgrade.not_allowed, null) == null ? [] : [1]
+        content {
+          end   = not_allowed.end
+          start = not_allowed.start
+        }
+      }
+    }
+  }
+
+  dynamic "maintenance_window_node_os" {
+    for_each = try(var.settings.maintenance_window_node_os[*], {})
+    content {
+      day_of_month = try(maintenance_window_node_os.value.day_of_month, null)
+      day_of_week  = try(maintenance_window_node_os.value.day_of_week, null)
+      duration     = try(maintenance_window_node_os.value.duration, null)
+      frequency    = try(maintenance_window_node_os.value.frequency, null)
+      interval     = try(maintenance_window_node_os.value.interval, null)
+      week_index   = try(maintenance_window_node_os.value.week_index, null)
+      start_date   = try(maintenance_window_node_os.value.start_date, null)
+      start_time   = try(maintenance_window_node_os.value.start_time, null)
+      utc_offset   = try(maintenance_window_node_os.value.utc_offset, null)
+      dynamic "not_allowed" {
+        for_each = try(maintenance_window_node_os.not_allowed, null) == null ? [] : [1]
+        content {
+          end   = not_allowed.end
+          start = not_allowed.start
         }
       }
     }
