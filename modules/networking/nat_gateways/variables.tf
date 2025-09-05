@@ -2,8 +2,10 @@ variable "settings" {}
 variable "name" {}
 variable "location" {}
 variable "resource_group_name" {}
-variable "subnet_id" {
-  default = ""
+variable "subnet_ids" {
+  description = "(Optional) list of subnet_id's to associate with this NT Gateway"
+  type        = list(string)
+  default     = []
 }
 variable "public_ip_address_id" {
   default = ""
@@ -25,4 +27,7 @@ variable "tags" {
   description = "(Optional) Tags for the resource to be deployed."
   default     = null
   type        = map(any)
+}
+variable "global_settings" {
+  description = "Global settings object (see module README.md)"
 }

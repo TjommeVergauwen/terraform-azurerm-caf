@@ -9,9 +9,8 @@
 #   use_slug      = var.global_settings.use_slug
 # }
 
-
 resource "azurerm_nat_gateway" "nat_gateway" {
-  name                    = var.name
+  name                    = join("-", var.global_settings.prefixes, ["ng", var.name])
   location                = var.location
   resource_group_name     = var.resource_group_name
   idle_timeout_in_minutes = var.idle_timeout_in_minutes
@@ -20,10 +19,10 @@ resource "azurerm_nat_gateway" "nat_gateway" {
 }
 
 module "nat_gateway_subnet" {
-  count  = try(var.settings.subnet_key, null) == null ? 0 : 1
+  count  = try(var.settings.subnet_keys, null) == null ? 0 : length(var.settings.subnet_keys)
   source = "./subnet_association"
 
-  subnet_id      = var.subnet_id
+  subnet_id      = var.subnet_ids[count.index]
   nat_gateway_id = azurerm_nat_gateway.nat_gateway.id
 }
 
