@@ -85,9 +85,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
     dynamic "upgrade_settings" {
       for_each = try(var.settings.default_node_pool.upgrade_settings, null) == null ? [] : [var.settings.default_node_pool.upgrade_settings]
       content {
-        drain_timeout_in_minutes      = try(var.settings.default_node_pool.upgrade_settings.drain_timeout_in_minutes, null)
-        node_soak_duration_in_minutes = try(var.settings.default_node_pool.upgrade_settings.node_soak_duration_in_minutes, null)
-        max_surge                     = var.settings.default_node_pool.upgrade_settings.max_surge
+        drain_timeout_in_minutes      = try(upgrade_settings.value.drain_timeout_in_minutes, null)
+        node_soak_duration_in_minutes = try(upgrade_settings.value.node_soak_duration_in_minutes, null)
+        max_surge                     = upgrade_settings.value.max_surge
       }
     }
 
@@ -615,9 +615,11 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodepools" {
   scale_down_mode              = try(each.value.scale_down_mode, null)
   ultra_ssd_enabled            = try(each.value.ultra_ssd_enabled, false)
   dynamic "upgrade_settings" {
-    for_each = try(each.value.upgrade_settings, null) == null ? [] : [1]
+    for_each = try(each.value.upgrade_settings, null) == null ? [] : [each.value.upgrade_settings]
     content {
-      max_surge = upgrade_settings.value.max_surge
+      drain_timeout_in_minutes      = try(upgrade_settings.value.drain_timeout_in_minutes, null)
+      node_soak_duration_in_minutes = try(upgrade_settings.value.node_soak_duration_in_minutes, null)
+      max_surge                     = upgrade_settings.value.max_surge
     }
   }
 
@@ -636,4 +638,3 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodepools" {
   min_count  = try(each.value.min_count, null)
   node_count = try(each.value.node_count, null)
 }
-
