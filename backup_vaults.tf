@@ -20,7 +20,7 @@ output "backup_vaults" {
 
 module "backup_vault_policies_blob_storage" {
   source = "./modules/backup_vault/backup_vault_policy_blob_storage"
-  for_each = {
+  for_each = local.data_protection.backup_vault_policies == null ? {} : {
     for key, value in local.data_protection.backup_vault_policies : key => value
     if value.type == "blob_storage"
   }
@@ -32,7 +32,7 @@ module "backup_vault_policies_blob_storage" {
 
 module "backup_vault_policies_disk" {
   source = "./modules/backup_vault/backup_vault_policy_disk"
-  for_each = {
+  for_each = local.data_protection.backup_vault_policies == null ? {} : {
     for key, value in local.data_protection.backup_vault_policies : key => value
     if value.type == "disk"
   }
@@ -53,7 +53,7 @@ output "backup_vault_policies" {
 module "backup_vault_instances_blob_storage" {
   source     = "./modules/backup_vault/backup_vault_instance_blob_storage"
   depends_on = [azurerm_role_assignment.for]
-  for_each = {
+  for_each = local.data_protection.backup_vault_instances == null ? {} : {
     for key, value in local.data_protection.backup_vault_instances : key => value
     if value.type == "blob_storage"
   }
@@ -68,7 +68,7 @@ module "backup_vault_instances_blob_storage" {
 module "backup_vault_instances_disk" {
   source     = "./modules/backup_vault/backup_vault_instance_disk"
   depends_on = [azurerm_role_assignment.for]
-  for_each = {
+  for_each = local.data_protection.backup_vault_instances == null ? {} : {
     for key, value in local.data_protection.backup_vault_instances : key => value
     if value.type == "disk"
   }

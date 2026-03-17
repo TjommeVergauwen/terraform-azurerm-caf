@@ -72,10 +72,11 @@ resource "azurerm_storage_account" "stg" {
     for_each = lookup(var.storage_account, "blob_properties", false) == false ? [] : [1]
 
     content {
-      versioning_enabled       = try(var.storage_account.blob_properties.versioning_enabled, false)
-      change_feed_enabled      = try(var.storage_account.blob_properties.change_feed_enabled, false)
-      default_service_version  = try(var.storage_account.blob_properties.default_service_version, "2020-06-12")
-      last_access_time_enabled = try(var.storage_account.blob_properties.last_access_time_enabled, false)
+      versioning_enabled            = try(var.storage_account.blob_properties.versioning_enabled, false)
+      change_feed_enabled           = try(var.storage_account.blob_properties.change_feed_enabled, false)
+      change_feed_retention_in_days = try(var.storage_account.blob_properties.change_feed_retention_in_days, null)
+      default_service_version       = try(var.storage_account.blob_properties.default_service_version, "2020-06-12")
+      last_access_time_enabled      = try(var.storage_account.blob_properties.last_access_time_enabled, false)
 
       dynamic "cors_rule" {
         for_each = lookup(var.storage_account.blob_properties, "cors_rule", false) == false ? [] : [1]
@@ -297,5 +298,5 @@ module "management_policy" {
   source             = "./management_policy"
   for_each           = try(var.storage_account.management_policies, {})
   storage_account_id = azurerm_storage_account.stg.id
-  settings           = try(var.storage_account.management_policies, {})
+  settings           = each.value
 }

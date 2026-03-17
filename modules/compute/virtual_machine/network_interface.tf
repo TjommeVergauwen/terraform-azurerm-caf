@@ -47,7 +47,7 @@ resource "azurerm_network_interface" "nic" {
   location            = local.location
   resource_group_name = local.resource_group_name
 
-  dns_servers                   = lookup(each.value, "dns_servers", null)
+  dns_servers = lookup(each.value, "dns_servers", null)
   # enable_ip_forwarding          = lookup(each.value, "enable_ip_forwarding", false)
   ip_forwarding_enabled         = lookup(each.value, "enable_ip_forwarding", false)
   enable_accelerated_networking = lookup(each.value, "enable_accelerated_networking", false)
