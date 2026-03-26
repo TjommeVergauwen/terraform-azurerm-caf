@@ -66,7 +66,7 @@ resource "null_resource" "grant_admin_consent" {
       resourceAppId = var.user_type == "user" ? null : each.value.resource_app_id
       appRoleId     = var.user_type == "user" ? null : each.value.id
       principalId   = var.user_type == "user" ? null : azuread_service_principal.app.id
-      applicationId = azuread_application.app.application_id
+      applicationId = azuread_application.app.client_id
     }
   }
 }

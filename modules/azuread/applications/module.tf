@@ -110,7 +110,7 @@ resource "azuread_application" "app" {
 }
 
 resource "azuread_service_principal" "app" {
-  application_id               = azuread_application.app.application_id
+  client_id                    = azuread_application.app.client_id
   app_role_assignment_required = try(var.settings.app_role_assignment_required, false)
   tags                         = try(var.settings.tags, null)
   owners = [

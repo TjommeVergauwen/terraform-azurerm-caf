@@ -14,6 +14,7 @@ resource "azurerm_maps_account" "map" {
   resource_group_name = local.resource_group_name
   sku_name            = var.settings.sku_name
   tags                = local.tags
+  location            = try(var.global_settings.regions[0], null)
 
 }
 

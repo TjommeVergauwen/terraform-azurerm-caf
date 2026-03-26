@@ -8,6 +8,7 @@ resource "azurecaf_name" "sqlpool" {
   use_slug      = var.global_settings.use_slug
 }
 
+/*
 resource "azurerm_synapse_sql_pool" "sql_pool" {
   name                 = azurecaf_name.sqlpool.result
   synapse_workspace_id = var.synapse_workspace_id
@@ -15,3 +16,5 @@ resource "azurerm_synapse_sql_pool" "sql_pool" {
   create_mode          = try(var.settings.create_mode, "Default")
   tags                 = local.tags
 }
+
+*/

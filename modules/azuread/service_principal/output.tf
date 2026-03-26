@@ -8,7 +8,7 @@ output "id" {
 }
 
 output "application_id" {
-  value = azuread_service_principal.app.application_id
+  value = azuread_service_principal.app.client_id
 }
 
 output "object_id" {

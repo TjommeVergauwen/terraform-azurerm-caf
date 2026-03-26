@@ -27,7 +27,7 @@ resource "null_resource" "grant_admin_consent" {
     resourceAppId  = each.value.resource_app_id
     appRoleId      = each.value.id
     principalId    = azuread_service_principal.app.object_id
-    application_id = azuread_service_principal.app.application_id
+    application_id = azuread_service_principal.app.client_id
   }
 
   for_each = {

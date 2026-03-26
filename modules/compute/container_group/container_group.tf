@@ -64,7 +64,7 @@ resource "azurerm_container_group" "acg" {
       )
 
       commands = try(container.value.commands, null)
-
+      /*
       dynamic "gpu" {
         for_each = try(container.value.gpu, null) == null ? [] : [1]
 
@@ -73,7 +73,7 @@ resource "azurerm_container_group" "acg" {
           sku   = gpu.value.sku
         }
       }
-
+*/
       dynamic "ports" {
         for_each = try(container.value.ports, {})
 

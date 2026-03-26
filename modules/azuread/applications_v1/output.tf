@@ -9,7 +9,7 @@ output "object_id" {
   value = azuread_application.app.object_id
 }
 output "application_id" {
-  value = azuread_application.app.application_id
+  value = azuread_application.app.client_id
 }
 output "sign_in_audience" {
   value = azuread_application.app.sign_in_audience

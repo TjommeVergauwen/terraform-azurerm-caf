@@ -63,6 +63,7 @@ resource "azurerm_monitor_action_group" "this" {
       use_common_alert_schema = try(email_receiver.value.use_common_alert_schema, false)
     }
   }
+  /*
   dynamic "event_hub_receiver" {
     for_each = try(var.settings.event_hub_receiver, {})
     content {
@@ -76,6 +77,7 @@ resource "azurerm_monitor_action_group" "this" {
       use_common_alert_schema = try(event_hub_receiver.value.use_common_alert_schema, null)
     }
   }
+  */
   dynamic "itsm_receiver" {
     for_each = try(var.settings.itsm_receiver, {})
     content {

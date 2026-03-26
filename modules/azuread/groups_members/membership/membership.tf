@@ -23,5 +23,5 @@ resource "azuread_group_member" "mssql_server_ids" {
   for_each = var.mssql_servers != {} ? toset(try(var.members.keys, [])) : []
 
   group_object_id  = var.group_object_id
-  member_object_id = var.mssql_servers[each.key].rbac_id
+  member_object_id = var.mssql_servers[each.key].object_id # was rbac_id
 }

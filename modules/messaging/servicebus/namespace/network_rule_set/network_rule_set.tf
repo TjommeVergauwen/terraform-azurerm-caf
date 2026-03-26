@@ -1,3 +1,4 @@
+/*
 resource "azurerm_servicebus_namespace_network_rule_set" "rule_set" {
   namespace_id = var.remote_objects.servicebus_namespace_id
   # resource_group_name = var.remote_objects.resource_group_name
@@ -14,3 +15,4 @@ resource "azurerm_servicebus_namespace_network_rule_set" "rule_set" {
     }
   }
 }
+*/

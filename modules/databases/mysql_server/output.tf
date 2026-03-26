@@ -1,3 +1,4 @@
+/*
 output "id" {
   value = azurerm_mysql_server.mysql.id
 }
@@ -26,3 +27,4 @@ output "resource_group_name" {
 output "location" {
   value = local.location
 }
+*/

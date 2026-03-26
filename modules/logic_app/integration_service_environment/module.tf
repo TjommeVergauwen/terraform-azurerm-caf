@@ -1,3 +1,4 @@
+/*
 resource "azurecaf_name" "ise" {
   name          = var.settings.name
   resource_type = "azurerm_integration_service_environment"
@@ -21,3 +22,4 @@ resource "azurerm_integration_service_environment" "ise" {
   ]
 }
 
+*/

@@ -1,3 +1,4 @@
+/*
 output "id" {
   value = azurerm_mariadb_server.mariadb.id
 }
@@ -17,3 +18,5 @@ output "resource_group_name" {
 output "location" {
   value = var.location
 }
+
+*/

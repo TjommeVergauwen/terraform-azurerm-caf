@@ -29,7 +29,7 @@ resource "azurerm_sentinel_automation_rule" "automation_rule" {
       tenant_id    = try(action_playbook.value.tenant_id, null)
     }
   }
-
+  /*
   dynamic "condition" {
     for_each = try(var.settings.condition, {})
 
@@ -39,4 +39,5 @@ resource "azurerm_sentinel_automation_rule" "automation_rule" {
       values   = try(condition.value.values, null)
     }
   }
+  */
 }

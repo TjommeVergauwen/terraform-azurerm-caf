@@ -27,7 +27,7 @@ resource "azurerm_synapse_workspace" "ws" {
   identity {
     type = "SystemAssigned"
   }
-
+  /*
   dynamic "aad_admin" {
     for_each = try(var.settings.aad_admin, null) != null ? [var.settings.aad_admin] : []
 
@@ -37,7 +37,7 @@ resource "azurerm_synapse_workspace" "ws" {
       tenant_id = try(aad_admin.value.tenant_id, null)
     }
   }
-
+*/
   dynamic "azure_devops_repo" {
     for_each = try(var.settings.azure_devops_repo, null) != null ? [var.settings.azure_devops_repo] : []
 

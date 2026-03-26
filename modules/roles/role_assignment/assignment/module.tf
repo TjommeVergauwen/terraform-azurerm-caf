@@ -29,7 +29,7 @@ resource "azurerm_role_assignment" "azuread_group" {
   scope                = var.scope
   role_definition_name = var.role_definition_name == null ? null : var.role_definition_name
   role_definition_id   = var.role_definition_id == null ? null : var.role_definition_id
-  principal_id         = var.azuread_groups[each.key].id
+  principal_id         = var.azuread_groups[each.key].object_id # changed from id
 }
 
 resource "azurerm_role_assignment" "msi" {

@@ -86,7 +86,7 @@ resource "azurerm_consumption_budget_subscription" "this" {
           values   = tag.value.values
         }
       }
-
+      /*
       dynamic "not" {
         for_each = try(var.settings.filter.not, null) == null ? [] : [1]
 
@@ -131,6 +131,7 @@ resource "azurerm_consumption_budget_subscription" "this" {
           }
         }
       }
+      */
     }
   }
 }

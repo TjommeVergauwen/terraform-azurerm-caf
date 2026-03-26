@@ -1,3 +1,4 @@
+/*
 resource "azurerm_mariadb_server" "mariadb" {
   name                = azurecaf_name.mariadb.result
   location            = local.location
@@ -83,3 +84,4 @@ resource "azurecaf_name" "mariadb" {
 
 
 
+*/

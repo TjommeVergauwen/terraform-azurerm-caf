@@ -4,7 +4,7 @@ resource "azuread_application_password" "key" {
   display_name = try(var.settings.display_name, local.description.key)
   end_date     = local.expiration_date.key
 
-  application_object_id = try(var.resources.application.id, null)
+  application_id = try(var.resources.application.id, null)
 
   rotate_when_changed = {
     rotation = time_rotating.key.0.id
@@ -21,7 +21,7 @@ resource "azuread_application_password" "key0" {
 
   end_date = local.expiration_date.key0
 
-  application_object_id = try(var.resources.application.id, null)
+  application_id = try(var.resources.application.id, null)
 
   rotate_when_changed = {
     rotation = time_rotating.key0.0.id
@@ -37,7 +37,7 @@ resource "azuread_application_password" "key1" {
   display_name = try(var.settings.display_name, local.description.key1)
   end_date     = local.expiration_date.key1
 
-  application_object_id = try(var.resources.application.id, null)
+  application_id = try(var.resources.application.id, null)
 
   rotate_when_changed = {
     rotation = time_rotating.key1.0.id

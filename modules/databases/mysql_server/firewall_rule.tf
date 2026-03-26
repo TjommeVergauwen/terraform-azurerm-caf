@@ -2,7 +2,7 @@
 #
 # Firewall Rule
 #
-
+/*
 resource "azurerm_mysql_firewall_rule" "mysql_firewall_rules" {
 
   for_each = try(var.settings.mysql_firewall_rules, {})
@@ -13,3 +13,5 @@ resource "azurerm_mysql_firewall_rule" "mysql_firewall_rules" {
   start_ip_address    = each.value.start_ip_address
   end_ip_address      = each.value.end_ip_address
 }
+
+*/

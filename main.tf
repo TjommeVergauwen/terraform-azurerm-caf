@@ -3,14 +3,14 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.114.0"
+      version = ">= 3.114.0"
       configuration_aliases = [
         azurerm.vhub
       ]
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "~> 2.43.0"
+      version = ">= 2.43.0"
     }
     azapi = {
       source  = "azure/azapi"
@@ -18,13 +18,13 @@ terraform {
     }
     azurecaf = {
       source  = "aztfmod/azurecaf"
-      version = "~> 1.2.0"
+      version = ">= 1.2.0"
     }
     null = {
       source = "hashicorp/null"
     }
     random = {
-      version = "~> 3.5.1"
+      version = ">= 3.5.1"
       source  = "hashicorp/random"
     }
   }
@@ -49,6 +49,6 @@ data "azuread_client_config" "current" {}
 
 
 data "azuread_service_principal" "logged_in_app" {
-  count          = var.logged_aad_app_objectId == null ? 0 : 1
-  application_id = data.azuread_client_config.current.client_id
+  count     = var.logged_aad_app_objectId == null ? 0 : 1
+  client_id = data.azuread_client_config.current.client_id
 }

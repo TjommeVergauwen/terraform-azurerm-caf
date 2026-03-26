@@ -61,7 +61,8 @@ module "azuread_group" {
 
   access_policy = each.value
   tenant_id     = var.client_config.tenant_id
-  object_id     = try(each.value.lz_key, null) == null ? var.azuread_groups[var.client_config.landingzone_key][each.value.azuread_group_key].id : var.azuread_groups[each.value.lz_key][each.value.azuread_group_key].id
+  object_id     = try(each.value.lz_key, null) == null ? var.azuread_groups[var.client_config.landingzone_key][each.value.azuread_group_key].object_id : var.azuread_groups[each.value.lz_key][each.value.azuread_group_key].object_id
+  #  object_id     = try(each.value.lz_key, null) == null ? var.azuread_groups[var.client_config.landingzone_key][each.value.azuread_group_key].id : var.azuread_groups[each.value.lz_key][each.value.azuread_group_key].id
 }
 
 module "logged_in_user" {

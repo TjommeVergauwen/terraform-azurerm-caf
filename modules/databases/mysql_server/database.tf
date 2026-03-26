@@ -2,7 +2,7 @@
 #
 # Firewall Rule
 #
-
+/*
 resource "azurerm_mysql_database" "mysql_database" {
 
   for_each = var.settings.mysql_databases
@@ -13,3 +13,6 @@ resource "azurerm_mysql_database" "mysql_database" {
   charset             = each.value.charset
   collation           = each.value.collation
 }
+
+
+*/

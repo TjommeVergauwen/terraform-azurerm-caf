@@ -11,12 +11,15 @@ resource "azurecaf_name" "bckp" {
 }
 
 resource "azurerm_data_protection_backup_vault" "backup_vault" {
-  name                = azurecaf_name.bckp.result
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  datastore_type      = var.settings.datastore_type
-  redundancy          = var.settings.redundancy
-  tags                = local.tags
+  name                       = azurecaf_name.bckp.result
+  location                   = var.location
+  resource_group_name        = var.resource_group_name
+  datastore_type             = var.settings.datastore_type
+  redundancy                 = var.settings.redundancy
+  tags                       = local.tags
+  retention_duration_in_days = try(var.settings.retention_duration_in_days, "14")
+  immutability               = try(var.settings.immutability, "Disabled") # Disabled, Locked, and Unlocked
+  soft_delete                = try(var.settings.soft_delete, "On")        # On, Off, and AlwaysOn
 
   dynamic "identity" {
     for_each = lookup(var.settings, "enable_identity", false) == false ? [] : [1]

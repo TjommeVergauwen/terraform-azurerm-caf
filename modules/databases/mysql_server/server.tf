@@ -1,3 +1,4 @@
+/*
 resource "azurerm_mysql_server" "mysql" {
 
   name                = azurecaf_name.mysql.result
@@ -89,7 +90,8 @@ resource "azurerm_key_vault_secret" "mysql_fqdn" {
   value        = azurerm_mysql_server.mysql.fqdn
   key_vault_id = var.keyvault_id
 }
-
+*/
+/*
 resource "azurerm_mysql_active_directory_administrator" "aad_admin" {
   count = try(var.settings.azuread_administrator, null) == null ? 0 : 1
 
@@ -99,3 +101,6 @@ resource "azurerm_mysql_active_directory_administrator" "aad_admin" {
   tenant_id           = try(var.settings.azuread_administrator.tenant_id, var.azuread_groups[var.settings.azuread_administrator.azuread_group_key].tenant_id)
   object_id           = try(var.settings.azuread_administrator.object_id, var.azuread_groups[var.settings.azuread_administrator.azuread_group_key].id)
 }
+
+
+*/

@@ -1,4 +1,4 @@
-
+/*
 resource "azurerm_mariadb_database" "mariadb_database" {
 
   for_each = var.settings.mariadb_database
@@ -9,3 +9,4 @@ resource "azurerm_mariadb_database" "mariadb_database" {
   charset             = each.value.charset
   collation           = each.value.collation
 }
+*/

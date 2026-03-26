@@ -1,6 +1,6 @@
 # Configuration
 #
-
+/*
 resource "azurerm_mysql_configuration" "mysql_configuration" {
 
   for_each = var.settings.mysql_configurations
@@ -10,3 +10,4 @@ resource "azurerm_mysql_configuration" "mysql_configuration" {
   server_name         = azurerm_mysql_server.mysql.name
   value               = each.value.value
 }
+*/

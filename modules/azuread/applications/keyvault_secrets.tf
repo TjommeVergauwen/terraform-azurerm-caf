@@ -3,7 +3,7 @@ resource "azurerm_key_vault_secret" "client_id" {
   for_each = try(var.settings.keyvaults, {})
 
   name         = format("%s-client-id", each.value.secret_prefix)
-  value        = azuread_application.app.application_id
+  value        = azuread_application.app.client_id
   key_vault_id = try(each.value.lz_key, null) == null ? var.keyvaults[var.client_config.landingzone_key][each.key].id : var.keyvaults[each.value.lz_key][each.key].id
 
   lifecycle {

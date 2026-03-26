@@ -43,7 +43,7 @@ resource "azurerm_kusto_cluster" "kusto" {
       data_management_public_ip_id = try(virtual_network_configuration.value.data_management_public_ip.key, null) == null ? null : try(var.combined_resources.pips[try(virtual_network_configuration.value.data_management_public_ip.lz_key, var.client_config.landingzone_key)][virtual_network_configuration.value.data_management_public_ip.key].id, null)
     }
   }
-  language_extensions = try(var.settings.language_extensions, null)
+  #  language_extensions = try(var.settings.language_extensions, null)
   dynamic "optimized_auto_scale" {
     for_each = try(var.settings.optimized_auto_scale, null) != null ? [var.settings.optimized_auto_scale] : []
 
@@ -52,9 +52,9 @@ resource "azurerm_kusto_cluster" "kusto" {
       maximum_instances = optimized_auto_scale.value.maximum_instances
     }
   }
-  trusted_external_tenants      = try(var.settings.trusted_external_tenants, null)
-  zones                         = try(var.settings.zones, null)
-  engine                        = try(var.settings.engine, null)
+  trusted_external_tenants = try(var.settings.trusted_external_tenants, null)
+  zones                    = try(var.settings.zones, null)
+  #engine                        = try(var.settings.engine, null)
   auto_stop_enabled             = try(var.settings.auto_stop_enabled, null)
   public_network_access_enabled = try(var.settings.public_network_access_enabled, null)
   tags                          = local.tags

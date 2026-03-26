@@ -37,7 +37,7 @@ data "azuread_service_principal" "front_door" {
     for key, value in local.networking.front_doors : key => value
     if try(value.keyvault_key, null) != null
   }
-  application_id = local.front_door_application_id
+  client_id = local.front_door_application_id
 }
 
 module "front_doors_keyvault_access_policy" {

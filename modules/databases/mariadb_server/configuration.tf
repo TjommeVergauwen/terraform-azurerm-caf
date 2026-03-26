@@ -1,6 +1,6 @@
 # Configuration
 #
-
+/*
 resource "azurerm_mariadb_configuration" "mariadb_configuration" {
 
   for_each = var.settings.mariadb_configuration
@@ -10,3 +10,4 @@ resource "azurerm_mariadb_configuration" "mariadb_configuration" {
   server_name         = azurerm_mariadb_server.mariadb.name
   value               = each.value.value
 }
+*/
