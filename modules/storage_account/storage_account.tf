@@ -300,3 +300,12 @@ module "management_policy" {
   storage_account_id = azurerm_storage_account.stg.id
   settings           = each.value
 }
+
+resource "azurerm_management_lock" "ml-storage-nodelete" {
+  count = lookup(var.storage_account, "lock", false) == false ? 0 : 1
+
+  name       = "StorageAccount-DoNotDelete"
+  scope      = azurerm_storage_account.stg.id
+  lock_level = "CanNotDelete"
+  notes      = "Locked to prevent accidental deletion"
+}
