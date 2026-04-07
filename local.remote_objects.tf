@@ -29,6 +29,7 @@ locals {
     azuread_users                                  = try(local.combined_objects_azuread_users, null)
     firewall_policies                              = try(local.combined_objects_azurerm_firewall_policies, null)
     firewalls                                      = try(local.combined_objects_azurerm_firewalls, null)
+    backup_vaults                                  = try(local.combined_objects_backup_vaults, null)
     batch_accounts                                 = try(local.combined_objects_batch_accounts, null)
     batch_applications                             = try(local.combined_objects_batch_applications, null)
     batch_certificates                             = try(local.combined_objects_batch_certificates, null)
