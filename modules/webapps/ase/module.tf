@@ -30,7 +30,7 @@ resource "azurerm_resource_group_template_deployment" "ase" {
 resource "null_resource" "destroy_ase" {
 
   triggers = {
-    resource_id = lookup(azurerm_resource_group_template_deployment.ase.output_content, "id")
+    resource_id = jsondecode(azurerm_resource_group_template_deployment.ase.output_content).id.value //lookup(azurerm_resource_group_template_deployment.ase.output_content, "id")
   }
 
   provisioner "local-exec" {
