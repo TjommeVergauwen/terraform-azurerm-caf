@@ -99,8 +99,9 @@ resource "azurerm_subnet_route_table_association" "rt" {
 
 resource "azurerm_subnet_network_security_group_association" "nsg_vnet_association" {
   for_each = {
+    # DL-9421: add constraint on network_security_groups to prevent creation of objects when they are defined as data_source
     for key, value in try(var.settings.subnets, {}) : key => value
-    if try(var.network_security_group_definition[value.nsg_key].version, 0) == 0 && try(value.nsg_key, null) != null
+    if try(var.network_security_group_definition[value.nsg_key].version, 0) == 0 && try(value.nsg_key, null) != null && can(var.network_security_groups[value.nsg_key].id) == false
   }
 
   subnet_id                 = module.subnets[each.key].id
@@ -110,8 +111,9 @@ resource "azurerm_subnet_network_security_group_association" "nsg_vnet_associati
 
 resource "azurerm_subnet_network_security_group_association" "nsg_vnet_association_version" {
   for_each = {
+    # DL-9421: add constraint on network_security_groups to prevent creation of objects when they are defined as data_source
     for key, value in try(var.settings.subnets, {}) : key => value
-    if try(var.network_security_group_definition[value.nsg_key].version, 0) > 0 && try(value.nsg_key, null) != null
+    if (try(var.network_security_group_definition[value.nsg_key].version, 0) > 0 && try(value.nsg_key, null) != null) || can(var.network_security_groups[value.nsg_key].id) == true
   }
 
   subnet_id                 = module.subnets[each.key].id

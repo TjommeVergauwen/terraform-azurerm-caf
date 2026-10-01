@@ -36,7 +36,9 @@ module "networking" {
   ddos_id                           = try(local.combined_objects_ddos_services[try(each.value.ddos_services_lz_key, local.client_config.landingzone_key)][try(each.value.ddos_services_key, each.value.ddos_services_key)].id, try(each.value.ddos_protection_plan_id, ""))
   diagnostics                       = local.combined_diagnostics
   global_settings                   = local.global_settings
-  network_security_groups           = module.network_security_groups
+  # DL-9421: use combined_objects_network_security_groups to access objects defined as data_source
+  # network_security_groups           = local.combined_objects_network_security_groups # module.network_security_groups
+  network_security_groups = merge(module.network_security_groups, lookup(var.data_sources, "network_security_groups", {}))
   network_security_group_definition = local.networking.network_security_group_definition
   network_watchers                  = local.combined_objects_network_watchers
   route_tables                      = module.route_tables

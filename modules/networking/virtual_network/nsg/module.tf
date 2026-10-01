@@ -1,7 +1,8 @@
 resource "azurecaf_name" "nsg_obj" {
   for_each = {
+    # DL-9421: add constraint on network_security_groups to prevent creation of objects when they are defined as data_source
     for key, value in var.subnets : key => value
-    if try(value.nsg_key, null) != null && try(var.network_security_group_definition[value.nsg_key].version, 0) == 0
+    if try(value.nsg_key, null) != null && try(var.network_security_group_definition[value.nsg_key].version, 0) == 0 && can(var.network_security_groups[value.nsg_key].id) == false
   }
   name          = try(var.network_security_group_definition[each.value.nsg_key].name, null) == null ? each.value.name : var.network_security_group_definition[each.value.nsg_key].name
   resource_type = "azurerm_network_security_group"
@@ -15,8 +16,9 @@ resource "azurecaf_name" "nsg_obj" {
 resource "azurerm_network_security_group" "nsg_obj" {
 
   for_each = {
+    # DL-9421: add constraint on network_security_groups to prevent creation of objects when they are defined as data_source
     for key, value in var.subnets : key => value
-    if try(value.nsg_key, null) != null && try(var.network_security_group_definition[value.nsg_key].version, 0) == 0
+    if try(value.nsg_key, null) != null && try(var.network_security_group_definition[value.nsg_key].version, 0) == 0 && can(var.network_security_groups[value.nsg_key].id) == false
   }
   name                = azurecaf_name.nsg_obj[each.key].result
   resource_group_name = var.resource_group
